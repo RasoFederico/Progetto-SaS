@@ -26,7 +26,7 @@ public class Service {
     private int eventId;
     private Menu menu;
 
-    private List<SquadMember> team = new List<>;
+    //private List<SquadMember> team = new List<>;
 
     public Service() {
     }

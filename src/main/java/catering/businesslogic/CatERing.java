@@ -32,7 +32,7 @@ public class CatERing {
     private CatERing() {
         menuMgr = new MenuManager();
         recipeMgr = new RecipeManager();
-        userMgr = new UserManager();
+        //userMgr = new UserManager();
         eventMgr = new EventManager();
         kitchenTaskMgr = new KitchenTaskManager();
         shiftMgr = new ShiftManager(); // Add this line to initialize ShiftManager
