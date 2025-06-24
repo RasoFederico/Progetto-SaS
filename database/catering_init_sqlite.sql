@@ -34,8 +34,21 @@ DROP TABLE IF EXISTS `Roles`;
 
 DROP TABLE IF EXISTS `Users`;
 
+DROP TABLE IF EXISTS `Employees`;
+
 -- 2) CREATE ALL TABLES (in dependency order)
 -- Start with tables that don't depend on others
+CREATE TABLE
+    `Employees` (
+        `tax_id` TEXT PRIMARY KEY,
+        `nominative` TEXT NOT NULL DEFAULT '',
+        `contact` TEXT DEFAULT '',
+        `address` TEXT DEFAULT '',
+        `remaining_holidays` INTEGER NOT NULL DEFAULT 0,
+        `permanent` INTEGER NOT NULL DEFAULT 0,
+        `role` INTEGER NOT NULL
+    );
+
 CREATE TABLE
     `Users` (
         `id` INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -930,7 +943,7 @@ WHERE
 
 -- ===== ADD CUSTOM USERS WITH ROLES =====
 -- First, add users
-INSERT INTO Users (username) VALUES 
+INSERT INTO Users (username) VALUES
 ('Marco'),      -- ID 1
 ('Giulia'),   -- ID 2
 ('Antonio'), -- ID 3
@@ -943,7 +956,7 @@ INSERT OR IGNORE INTO Roles (id, role) VALUES
 (0,'COOK'),
 (1, 'CHEF'),
 (2, 'ORGANIZER'),
-(3, 'SERVICE');
+(3, 'SERVICE'),
 (4, 'OWNER');
 
 -- Now assign roles to users
@@ -965,6 +978,11 @@ INSERT INTO UserRoles (user_id, role_id) VALUES
 -- Users with multiple roles
 INSERT INTO UserRoles (user_id, role_id) VALUES
 (6, 2); -- Chiara is both chef and organizer
+
+INSERT INTO Employees(tax_id, nominative, contact, address, remaining_holidays, permanent, role) VALUES
+('TSCZLX89C21I585K', 'Carlo Morandi', 'carlo.morandi@email.it', 'via roma', 10, 1, 0),
+('VWDNCG45P08L809U', 'Piero Lugano', '+393409625633', 'via degli alpini', 3, 0, 3),
+('ZPQDQC55A20L145B', 'Federico Verra', '', 'via tesoriere', 0, 1, 3);
 
 -- First create a menu
 INSERT INTO Menus (title, owner_id, published) 
