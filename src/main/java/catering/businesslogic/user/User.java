@@ -11,8 +11,8 @@ import java.util.Set;
 
 public class User {
 
-    public static enum Role {
-        CUOCO, CHEF, ORGANIZZATORE, SERVIZIO
+    public enum Role {
+        CHEF, ORGANIZER, OWNER
     };
 
     private int id;
@@ -27,10 +27,6 @@ public class User {
         id = 0;
         this.username = username;
         this.roles = new HashSet<>();
-    }
-
-    public boolean isCook() {
-        return roles.contains(Role.CUOCO);
     }
 
     public boolean isChef() {
@@ -198,17 +194,14 @@ public class User {
             public void handle(ResultSet rs) throws SQLException {
                 int role = rs.getInt("role_id");
                 switch (role) {
-                    case 0:
-                        u.roles.add(User.Role.CUOCO);
-                        break;
                     case 1:
-                        u.roles.add(User.Role.CHEF);
+                        u.roles.add(Role.CHEF);
                         break;
                     case 2:
-                        u.roles.add(User.Role.ORGANIZZATORE);
+                        u.roles.add(Role.ORGANIZER);
                         break;
-                    case 3:
-                        u.roles.add(User.Role.SERVIZIO);
+                    case 4:
+                        u.roles.add(Role.OWNER);
                         break;
                 }
             }
@@ -304,14 +297,12 @@ public class User {
      */
     private String getRoleStringId(Role role) {
         switch (role) {
-            case CUOCO:
-                return "c";
             case CHEF:
                 return "h";
-            case ORGANIZZATORE:
+            case ORGANIZER:
                 return "o";
-            case SERVIZIO:
-                return "s";
+            case OWNER:
+                return "w";
             default:
                 return "";
         }
