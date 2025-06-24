@@ -9,7 +9,7 @@ public class UserManager {
     private static UserManager instance = new UserManager();
 
     private UserManager (){
-        UserManager.getInstance().getCurrentUser().isOrganizer();   
+
     }
 
     private User currentUser;
