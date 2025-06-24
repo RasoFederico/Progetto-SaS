@@ -8,7 +8,7 @@ public class UserManager {
     private static final Logger LOGGER = LogManager.getLogger(UserManager.class);
     private static UserManager instance = new UserManager();
 
-    private UserManager (){
+    private UserManager () {
 
     }
 

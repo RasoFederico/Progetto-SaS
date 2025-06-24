@@ -933,46 +933,37 @@ WHERE
 INSERT INTO Users (username) VALUES 
 ('Marco'),      -- ID 1
 ('Giulia'),   -- ID 2
-('Luca'),       -- ID 3
-('Sofia'),      -- ID 4
-('Antonio'), -- ID 5
-('Chiara'),   -- ID 6
-('Giovanni'),   -- ID 7
-('Francesca'); -- ID 8
+('Antonio'), -- ID 3
+('Chiara'),   -- ID 4
+('Giovanni'),   -- ID 5
+('Francesca'); -- ID 6
 
 -- Next, set up the role entries in Roles table (if not already present)
 INSERT OR IGNORE INTO Roles (id, role) VALUES
-(0,'CUOCO'),
+(0,'COOK'),
 (1, 'CHEF'),
-(2, 'ORGANIZZATORE'),
-(3, 'SERVIZIO');
+(2, 'ORGANIZER'),
+(3, 'SERVICE');
+(4, 'OWNER');
 
 -- Now assign roles to users
--- Staff (SERVIZIO)
+-- Staff (OWNER)
 INSERT INTO UserRoles (user_id, role_id) VALUES
-(1, 3),  -- Marco is wait staff
-(2, 3);  -- Giulia is wait staff
-
--- Cooks (CUOCO)
-INSERT INTO UserRoles (user_id, role_id) VALUES
-(3, 0),    -- Luca is a cook
-(4, 0);    -- Sofia is a cook
+(1, 4),  -- Marco is owner
+(2, 4);  -- Giulia is owner
 
 -- Chefs (CHEF)
 INSERT INTO UserRoles (user_id, role_id) VALUES
-(5, 1),     -- Antonio is a chef
-(6, 1);     -- Chiara is a chef
+(3, 1),     -- Antonio is a chef
+(4, 1);     -- Chiara is a chef
 
--- Organizers (ORGANIZZATORE)
+-- Organizers (ORAGNIZER)
 INSERT INTO UserRoles (user_id, role_id) VALUES
-(7, 2),  -- Giovanni is an organizer
-(8, 2);  -- Francesca is an organizer
+(5, 2),  -- Giovanni is an organizer
+(6, 2);  -- Francesca is an organizer
 
 -- Users with multiple roles
 INSERT INTO UserRoles (user_id, role_id) VALUES
-(5, 0),        -- Antonio is both chef and cook
-(7, 3),     -- Giovanni is both organizer and wait staff
-(4, 3),     -- Sofia is both cook and wait staff
 (6, 2); -- Chiara is both chef and organizer
 
 -- First create a menu
