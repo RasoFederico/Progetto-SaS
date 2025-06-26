@@ -59,6 +59,10 @@ public class User {
         return sb.toString();
     }
 
+    public boolean isOrganizer() {
+        return roles.contains(Role.ORGANIZER);
+    }
+
     /**
      * Sets the username for this user
      * 

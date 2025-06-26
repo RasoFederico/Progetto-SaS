@@ -5,11 +5,17 @@ import java.util.*;
 import java.sql.Date;
 import java.util.logging.Logger;
 
+import catering.businesslogic.UseCaseLogicException;
+import catering.businesslogic.employee.Employee;
 import catering.businesslogic.menu.Menu;
 import catering.businesslogic.menu.MenuItem;
+import catering.businesslogic.user.User;
+import catering.businesslogic.user.UserManager;
 import catering.persistence.PersistenceManager;
 import catering.persistence.ResultHandler;
 import catering.util.LogManager;
+
+import catering.businesslogic.employee.Employee;
 
 /**
  * Represents a service in an event in the catering system.
@@ -25,6 +31,7 @@ public class Service {
     private String location;
     private int eventId;
     private Menu menu;
+    private List<TeamMember> team;
 
     //private List<SquadMember> team = new ArrayList<>();
 
@@ -339,4 +346,37 @@ public class Service {
 
         return true;
     }
+
+    public void createTeam(List<String> roles){
+        team = new ArrayList<>();
+        for(String role : roles){
+            TeamMember t = new TeamMember(role);
+            team.add(t);
+        }
+    }
+
+    public boolean addEmoloyeeToTeam(Employee employee, String r) throws UseCaseLogicException {
+        if(!UserManager.getInstance().getCurrentUser().isOrganizer())
+            throw new UseCaseLogicException("Only organizer can add emoloyee to team");
+        for(TeamMember t :team){
+            String role = t.getRole();
+            if(role.equals(r)){
+                Employee m = t.getMember();
+                if(m==null){
+                    t.setMember(employee);
+                    t.save();
+                    saveIntoTeam(t);
+                    return true;
+                }
+            }
+
+        }
+        return false;
+    }
+
+    public void saveIntoTeam(TeamMember t){
+        String query = "INSERT INTO Team (service_id, member) VALUES (?, ?)";
+        PersistenceManager.executeUpdate(query, this.id, t.getMember().getTaxId());
+    }
+
 }
