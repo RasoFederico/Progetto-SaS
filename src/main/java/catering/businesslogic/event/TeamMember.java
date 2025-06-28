@@ -4,23 +4,42 @@ import catering.businesslogic.employee.Employee;
 import catering.persistence.PersistenceManager;
 
 public class TeamMember {
+    private int id = 0;
+    private int serviceId;
     private String role;
     private String note;
-    private Employee member;
+    private String memberTaxId;
 
-    public TeamMember(String role) {
-        this.member = null;
+    public TeamMember(int serviceId, String role) {
+        this.serviceId = serviceId;
+        this.memberTaxId = null;
         this.role = role;
         this.note = null;
     }
 
-    public boolean save(){
+    public TeamMember(int id, int serviceId, String role, String note, String memberTaxId) {
+        this.id = id;
+        this.serviceId = serviceId;
+        this.memberTaxId = memberTaxId;
+        this.role = role;
+        this.note = note;
+    }
 
-        String query = "INSERT INTO team_member (role, note, member) VALUES (?, ?, ?)";
-
-        int res = PersistenceManager.executeUpdate(query, role, note, member.getTaxId());
-
+    public boolean insert(){
+        String query = "INSERT INTO TeamMember (id, serviceId, role, note, memberTaxId) VALUES (?, ?, ?, ?, ?)";
+        int res = PersistenceManager.executeUpdate(query, id, serviceId, role, note, memberTaxId);
+        id = PersistenceManager.getLastId();
         return res!=0;
+    }
+
+    public boolean update() {
+        String query = "UPDATE TeamMember SET serviceId = ?, role = ?, note = ?, memberTaxId = ? WHERE id = ? ";
+        int res = PersistenceManager.executeUpdate(query, serviceId, role, note, memberTaxId, id);
+        return res!=0;
+    }
+
+    public void setServiceId(int serviceId) {
+        this.serviceId = serviceId;
     }
 
     public void setRole(String role) {
@@ -31,8 +50,12 @@ public class TeamMember {
         this.note = note;
     }
 
-    public void setMember(Employee member) {
-        this.member = member;
+    public void setMemberTaxId(String memberTaxId) {
+        this.memberTaxId = memberTaxId;
+    }
+
+    public int getServiceId() {
+        return serviceId;
     }
 
     public String getRole() {
@@ -43,7 +66,7 @@ public class TeamMember {
         return note;
     }
 
-    public Employee getMember() {
-        return member;
+    public String getMemberTaxId() {
+        return memberTaxId;
     }
 }

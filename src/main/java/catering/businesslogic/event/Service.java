@@ -31,9 +31,7 @@ public class Service {
     private String location;
     private int eventId;
     private Menu menu;
-    private List<TeamMember> team;
-
-    //private List<SquadMember> team = new ArrayList<>();
+    private List<TeamMember> team = null;
 
     public Service() {
     }
@@ -209,6 +207,7 @@ public class Service {
                 if (menuId > 0)
                     s.menu = Menu.load(menuId);
 
+                s.team = loadTeam(s.id);
                 services.add(s);
             }
         }, eventId);
@@ -269,7 +268,7 @@ public class Service {
                         LOGGER.warning("Failed to load menu (id: " + menuId + ") for service: " + s.name);
                     }
                 }
-
+                s.team = loadTeam(s.id);
                 serviceHolder[0] = s;
             }
         }, param);
@@ -347,10 +346,30 @@ public class Service {
         return true;
     }
 
-    public void createTeam(List<String> roles){
+    private static ArrayList<TeamMember> loadTeam(int serviceId) {
+        ArrayList<TeamMember> team = new ArrayList<>();
+        String query = "SELECT * FROM TeamMember WHERE serviceId=?;";
+
+        PersistenceManager.executeQuery(query, rs -> {
+            int id = rs.getInt("id");
+            String role = rs.getString("role");
+            String note = rs.getString("note");
+            String memberTaxId = rs.getString("memberTaxId");
+            team.add(
+                    new TeamMember(id, serviceId, role, note, memberTaxId)
+            );
+        }, serviceId);
+
+        return team;
+    }
+
+    public void createTeam(List<String> roles) throws UseCaseLogicException {
+        if (team != null)
+            throw new UseCaseLogicException("Team for this service already exists.");
         team = new ArrayList<>();
         for(String role : roles){
-            TeamMember t = new TeamMember(role);
+            TeamMember t = new TeamMember(id, role);
+            t.insert();
             team.add(t);
         }
     }
@@ -358,14 +377,13 @@ public class Service {
     public boolean addEmoloyeeToTeam(Employee employee, String r) throws UseCaseLogicException {
         if(!UserManager.getInstance().getCurrentUser().isOrganizer())
             throw new UseCaseLogicException("Only organizer can add emoloyee to team");
-        for(TeamMember t :team){
-            String role = t.getRole();
+        for(TeamMember slot : team){
+            String role = slot.getRole();
             if(role.equals(r)){
-                Employee m = t.getMember();
-                if(m==null){
-                    t.setMember(employee);
-                    t.save();
-                    saveIntoTeam(t);
+                String id = slot.getMemberTaxId();
+                if(id==null){
+                    slot.setMemberTaxId(employee.getTaxId());
+                    slot.update();
                     return true;
                 }
             }
@@ -373,10 +391,4 @@ public class Service {
         }
         return false;
     }
-
-    public void saveIntoTeam(TeamMember t){
-        String query = "INSERT INTO Team (service_id, member) VALUES (?, ?)";
-        PersistenceManager.executeUpdate(query, this.id, t.getMember().getTaxId());
-    }
-
 }
