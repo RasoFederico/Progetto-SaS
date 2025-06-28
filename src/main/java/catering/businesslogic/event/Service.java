@@ -31,7 +31,7 @@ public class Service {
     private String location;
     private int eventId;
     private Menu menu;
-    private List<TeamMember> team = null;
+    private List<TeamMember> team = new ArrayList<>();
 
     public Service() {
     }
@@ -364,7 +364,7 @@ public class Service {
     }
 
     public void createTeam(List<String> roles) throws UseCaseLogicException {
-        if (team != null)
+        if (!team.isEmpty())
             throw new UseCaseLogicException("Team for this service already exists.");
         team = new ArrayList<>();
         for(String role : roles){
