@@ -34,7 +34,7 @@ public class HolidayRequest {
 
     public boolean update(){
         String query = "UPDATE TeamMember SET state=? WHERE id = ? ";
-        int res = PersistenceManager.executeUpdate(query, this.state, this.id);
+        int res = PersistenceManager.executeUpdate(query, this.state.ordinal(), this.id);
         return res!=0;
     }
 

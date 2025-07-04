@@ -59,22 +59,6 @@ public class HolidaysManager {
         return requests;
     }
 
-    /*public static ArrayList<Event> loadAllEvents() {
-        ArrayList<Event> events = new ArrayList<>();
-        String query = "SELECT * FROM Events ORDER BY date_start DESC";
-
-        PersistenceManager.executeQuery(query, new ResultHandler() {
-            @Override
-            public void handle(ResultSet rs) throws SQLException {
-                Event e = new Event();
-                e.id = rs.getInt("id");
-                e.name = rs.getString("name");
-                e.dateStart = DateUtils.getDateFromResultSet(rs, "date_start");
-                e.dateEnd = DateUtils.getDateFromResultSet(rs, "date_end");
-                e.chef = User.load(rs.getInt("chef_id"));
-                events.add(e);
-            }
-        });*/
 
 
 }
