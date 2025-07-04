@@ -1,0 +1,80 @@
+package catering.businesslogic.holidayRequest;
+
+import catering.businesslogic.employee.EmployeeManager;
+import catering.persistence.PersistenceManager;
+import catering.persistence.ResultHandler;
+
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+
+public class HolidaysManager {
+    public boolean acceptRequest(HolidayRequest hr) {
+        hr.setState(HolidayRequest.RequestState.ACCEPTED);
+        return hr.update();
+    }
+
+    public boolean rejectRequest(HolidayRequest hr) {
+        hr.setState(HolidayRequest.RequestState.REJECTED);
+        return hr.update();
+    }
+
+    public static List<HolidayRequest> getHolidayRequests() {
+        ArrayList<HolidayRequest> requests = new ArrayList<>();
+        String query ="SELECT * FROM HolidayRequest";
+
+        PersistenceManager.executeQuery(query, new ResultHandler() {
+            @Override
+            public void handle(ResultSet rs) throws SQLException {
+                HolidayRequest hr = new HolidayRequest();
+                hr.setId(rs.getInt("id"));
+                hr.setState(HolidayRequest.RequestState.values()[rs.getInt("state")]);
+                hr.setFrom(rs.getDate("from"));
+                hr.setTo(rs.getDate("to"));
+                hr.setEmployee(EmployeeManager.getEmployee(rs.getString("employee")));
+                requests.add(hr);
+            }
+        });
+        return requests;
+    }
+
+
+    public static List<HolidayRequest> getPendingHolidayRequests(String employee) {
+        ArrayList<HolidayRequest> requests = new ArrayList<>();
+        String query ="SELECT * FROM HolidayRequest WHERE state = ?";
+
+        PersistenceManager.executeQuery(query, new ResultHandler() {
+            @Override
+            public void handle(ResultSet rs) throws SQLException {
+                HolidayRequest hr = new HolidayRequest();
+                hr.setId(rs.getInt("id"));
+                hr.setState(HolidayRequest.RequestState.values()[rs.getInt("state")]);
+                hr.setFrom(rs.getDate("from"));
+                hr.setTo(rs.getDate("to"));
+                hr.setEmployee(EmployeeManager.getEmployee(rs.getString("employee")));
+                requests.add(hr);
+            }
+        }, HolidayRequest.RequestState.PENDING.ordinal());
+        return requests;
+    }
+
+    /*public static ArrayList<Event> loadAllEvents() {
+        ArrayList<Event> events = new ArrayList<>();
+        String query = "SELECT * FROM Events ORDER BY date_start DESC";
+
+        PersistenceManager.executeQuery(query, new ResultHandler() {
+            @Override
+            public void handle(ResultSet rs) throws SQLException {
+                Event e = new Event();
+                e.id = rs.getInt("id");
+                e.name = rs.getString("name");
+                e.dateStart = DateUtils.getDateFromResultSet(rs, "date_start");
+                e.dateEnd = DateUtils.getDateFromResultSet(rs, "date_end");
+                e.chef = User.load(rs.getInt("chef_id"));
+                events.add(e);
+            }
+        });*/
+
+
+}

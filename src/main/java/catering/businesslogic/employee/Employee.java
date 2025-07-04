@@ -23,6 +23,7 @@ public class Employee {
         this.remainingHolidays = remainingHolidays;
         this.role = role;
     }
+    public Employee(){}
 
     public boolean isCook(){
         return role == EmployeeRole.COOK;
