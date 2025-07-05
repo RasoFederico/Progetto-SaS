@@ -28,13 +28,19 @@ public class HolidayRequest {
     public HolidayRequest(){}
 
     public boolean save(){
-        String query = "INSERT INTO HolidayRequest (employee, from, to, state) VALUES (?, ?, ?, ?)";
+        String query = "INSERT INTO HolidayRequest (employee, from_date, to_date, state) VALUES (?, ?, ?, ?)";
         return PersistenceManager.executeUpdate(query, this.employee.getTaxId(), this.from, this.to, this.state.ordinal())!=0;
     }
 
     public boolean update(){
         String query = "UPDATE TeamMember SET state=? WHERE id = ? ";
         int res = PersistenceManager.executeUpdate(query, this.state.ordinal(), this.id);
+        return res!=0;
+    }
+
+    public boolean delete(){
+        String query = "DELETE FROM HolidayRequest WHERE id = ?";
+        int res = PersistenceManager.executeUpdate(query, this.id);
         return res!=0;
     }
 

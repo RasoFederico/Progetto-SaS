@@ -42,6 +42,12 @@ public class Employee {
         return res != 0;
     }
 
+    public boolean delete(){
+        String query = "DELETE FROM Employee WHERE tax_id = ?";
+        int res=PersistenceManager.executeUpdate(query,this.taxId);
+        return res != 0;
+    }
+
     public void setPermanent(boolean permanent) {
         this.permanent = permanent;
     }

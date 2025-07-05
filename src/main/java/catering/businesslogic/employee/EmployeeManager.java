@@ -43,7 +43,8 @@ public class EmployeeManager {
                 e.setAddress(rs.getString("address"));
                 e.setPermanent(rs.getBoolean("permanent"));
                 e.setRemainingHolidays(rs.getInt("remaining_holidays"));
-                e.setRole(Employee.EmployeeRole.values()[rs.getInt("role")]);
+                int role = (rs.getInt("role")) == 0 ? 0:1;
+                e.setRole(Employee.EmployeeRole.values()[role]);
                 employee[0] =e;
             }
         });
