@@ -26,15 +26,21 @@ public class TeamMember {
     }
 
     public boolean insert(){
-        String query = "INSERT INTO TeamMember (serviceId, role, note, memberTaxId) VALUES (?, ?, ?, ?)";
+        String query = "INSERT INTO TeamMember (service_id, role, note, member_tax_id) VALUES (?, ?, ?, ?)";
         int res = PersistenceManager.executeUpdate(query, serviceId, role, note, memberTaxId);
         id = PersistenceManager.getLastId();
         return res!=0;
     }
 
     public boolean update() {
-        String query = "UPDATE TeamMember SET serviceId = ?, role = ?, note = ?, memberTaxId = ? WHERE id = ? ";
+        String query = "UPDATE TeamMember SET service_id = ?, role = ?, note = ?, member_tax_id = ? WHERE id = ? ";
         int res = PersistenceManager.executeUpdate(query, serviceId, role, note, memberTaxId, id);
+        return res!=0;
+    }
+
+    public boolean delete(){
+        String query = "DELETE FROM TeamMember WHERE id = ? ";
+        int res = PersistenceManager.executeUpdate(query, this.id);
         return res!=0;
     }
 
