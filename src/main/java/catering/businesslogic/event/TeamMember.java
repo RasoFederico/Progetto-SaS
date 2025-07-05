@@ -26,8 +26,8 @@ public class TeamMember {
     }
 
     public boolean insert(){
-        String query = "INSERT INTO TeamMember (id, serviceId, role, note, memberTaxId) VALUES (?, ?, ?, ?, ?)";
-        int res = PersistenceManager.executeUpdate(query, id, serviceId, role, note, memberTaxId);
+        String query = "INSERT INTO TeamMember (serviceId, role, note, memberTaxId) VALUES (?, ?, ?, ?)";
+        int res = PersistenceManager.executeUpdate(query, serviceId, role, note, memberTaxId);
         id = PersistenceManager.getLastId();
         return res!=0;
     }

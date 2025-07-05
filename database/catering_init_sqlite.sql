@@ -1,4 +1,6 @@
 -- database: catering.db
+PRAGMA foreign_keys = ON;
+
 -- 1) FIRST REMOVE ALL TABLES (in reverse dependency order)
 DROP TABLE IF EXISTS `Assignment`;
 
@@ -15,6 +17,8 @@ DROP TABLE IF EXISTS `RecipePreparations`;
 DROP TABLE IF EXISTS `UserRoles`;
 
 DROP TABLE IF EXISTS `Services`;
+
+DROP TABLE IF EXISTS `TeamMember`;
 
 DROP TABLE IF EXISTS `MenuItems`;
 
@@ -34,6 +38,8 @@ DROP TABLE IF EXISTS `Roles`;
 
 DROP TABLE IF EXISTS `Users`;
 
+DROP TABLE IF EXISTS `HolidayRequest`;
+
 DROP TABLE IF EXISTS `Employees`;
 
 -- 2) CREATE ALL TABLES (in dependency order)
@@ -48,6 +54,15 @@ CREATE TABLE
         `permanent` INTEGER NOT NULL DEFAULT 0,
         `role` INTEGER NOT NULL
     );
+
+CREATE TABLE `HolidayRequest` (
+    `id` INTEGER PRIMARY KEY AUTOINCREMENT,
+    `employee` TEXT NOT NULL,
+    `from_date` DATE NOT NULL,
+    `to_date` DATE NOT NULL,
+    `state` INTEGER NOT NULL, -- 0 = ACCEPTED, 1 = REJECTED, 2 = PENDING
+    FOREIGN KEY (`employee`) REFERENCES `Employees`(`tax_id`) ON DELETE CASCADE
+);
 
 CREATE TABLE
     `Users` (
@@ -145,6 +160,17 @@ CREATE TABLE
         `time_end` TIME,
         `location` TEXT
     );
+
+CREATE TABLE `TeamMember` (
+    `id` INTEGER PRIMARY KEY AUTOINCREMENT,
+    `service_id` INTEGER NOT NULL,
+    `role` TEXT,
+    `note` TEXT,
+    `member_tax_id` TEXT,
+    FOREIGN KEY (`service_id`) REFERENCES `Services`(`id`) ON DELETE CASCADE,
+    FOREIGN KEY (`member_tax_id`) REFERENCES `Employees`(`tax_id`) ON DELETE CASCADE
+);
+
 
 CREATE TABLE
     `Shifts` (
@@ -984,6 +1010,10 @@ INSERT INTO Employees(tax_id, nominative, contact, address, remaining_holidays, 
 ('VWDNCG45P08L809U', 'Piero Lugano', '+393409625633', 'via degli alpini', 3, 0, 3),
 ('ZPQDQC55A20L145B', 'Federico Verra', '', 'via tesoriere', 0, 1, 3);
 
+
+INSERT INTO HolidayRequest(employee, from_date, to_date, state)
+VALUES ('VWDNCG45P08L809U', '2025-08-01', '2025-08-05', 2);
+
 -- First create a menu
 INSERT INTO Menus (title, owner_id, published) 
 VALUES ('Sample Menu', 5, 1);  -- Created by Antonio (chef), and published
@@ -1062,4 +1092,28 @@ INSERT INTO Services (
     time('19:00'),              -- Start time
     time('23:00'),              -- End time
     'Sala Esecutiva'            -- Location in Italian
+);
+
+INSERT INTO TeamMember(
+    service_id,
+    role,
+    note,
+    member_tax_id
+) VALUES (
+    1,
+    'Cuoco Pesce',
+    '',
+    'TSCZLX89C21I585K'
+);
+
+INSERT INTO TeamMember(
+    service_id,
+    role,
+    note,
+    member_tax_id
+) VALUES (
+    1,
+    'Cameriere',
+    '',
+    'ZPQDQC55A20L145B'
 );

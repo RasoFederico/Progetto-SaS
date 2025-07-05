@@ -18,7 +18,7 @@ public class HolidayRequest {
     private RequestState state;
 
     public HolidayRequest(Employee employee, Date from, Date to) {
-        id=generateId();
+        id=-1;
         this.state = RequestState.PENDING;
         this.employee = employee;
         this.from = from;
@@ -29,22 +29,19 @@ public class HolidayRequest {
 
     public boolean save(){
         String query = "INSERT INTO HolidayRequest (employee, from, to, state) VALUES (?, ?, ?, ?)";
-        return PersistenceManager.executeUpdate(query, this.employee.getTaxId(), this.from, this.to, this.state.ordinal())!=0;
+        int ret = PersistenceManager.executeUpdate(query, this.employee.getTaxId(), this.from, this.to, this.state.ordinal());
+        id = PersistenceManager.getLastId();
+        return ret != 0;
     }
 
     public boolean update(){
-        String query = "UPDATE TeamMember SET state=? WHERE id = ? ";
-        int res = PersistenceManager.executeUpdate(query, this.state.ordinal(), this.id);
+        String query = "UPDATE HolidayRequest SET state=?, from=?, to=? WHERE id = ? ";
+        int res = PersistenceManager.executeUpdate(query, this.state.ordinal(), this.from, this.to, this.id);
         return res!=0;
     }
 
     public void setId(int id){
         this.id = id;
-    }
-
-    private int generateId(){
-        Random random = new Random();
-        return 100000 + random.nextInt(900000);
     }
 
     public int getId() {

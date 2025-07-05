@@ -32,11 +32,10 @@ public class EmployeeManager {
 
     public static Employee getEmployee(String taxId) {
         String query = "SELECT * FROM Employee WHERE tax_id = ?";
-        final Employee[] employee = new Employee[1];
+        Employee e= new Employee();
         PersistenceManager.executeQuery(query, new ResultHandler() {
             @Override
             public void handle(ResultSet rs) throws SQLException {
-                Employee e= new Employee();
                 e.setTaxId(rs.getString("tax_id"));
                 e.setNominative(rs.getString("nominative"));
                 e.setContact(rs.getString("contact"));
@@ -44,9 +43,9 @@ public class EmployeeManager {
                 e.setPermanent(rs.getBoolean("permanent"));
                 e.setRemainingHolidays(rs.getInt("remaining_holidays"));
                 e.setRole(Employee.EmployeeRole.values()[rs.getInt("role")]);
-                employee[0] =e;
+
             }
-        });
-        return employee[0];
+        }, taxId);
+        return e;
     }
 }
