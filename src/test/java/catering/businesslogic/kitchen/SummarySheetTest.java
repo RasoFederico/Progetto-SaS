@@ -1,6 +1,9 @@
 package catering.businesslogic.kitchen;
 
 import static org.junit.jupiter.api.Assertions.*;
+
+import catering.businesslogic.employee.Employee;
+import catering.businesslogic.employee.EmployeeManager;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.TestMethodOrder;
 import org.junit.jupiter.api.MethodOrderer.OrderAnnotation;
@@ -29,7 +32,7 @@ public class SummarySheetTest {
 
     private static CatERing app;
     private static User chef;
-    private static User cook;
+    private static Employee cook;
     private static Event testEvent;
     private static Service testService;
 
@@ -49,7 +52,7 @@ public class SummarySheetTest {
             assertTrue(chef.isChef(), "User should have chef role");
 
             // Set up the cook user
-            cook = User.load("Luca");
+            cook = EmployeeManager.getEmployee("TSCZLX89C21I585K");
             assertNotNull(cook, "Cook user should be loaded");
 
             // Set up event and service
@@ -128,7 +131,7 @@ public class SummarySheetTest {
 
             LOGGER.info("Successfully assigned task. Assignment details: " +
                     "Task: " + assignment.getTask().getDescription() +
-                    ", Cook: " + assignment.getCook().getUserName() +
+                    ", Cook: " + assignment.getCook().getNominative() +
                     ", Shift: " + assignment.getShift().getDate() + " " +
                     assignment.getShift().getStartTime() + "-" +
                     assignment.getShift().getEndTime());

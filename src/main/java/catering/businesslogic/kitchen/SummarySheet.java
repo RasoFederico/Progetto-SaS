@@ -10,6 +10,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 
 import catering.businesslogic.UseCaseLogicException;
+import catering.businesslogic.employee.Employee;
 import catering.businesslogic.event.Service;
 import catering.businesslogic.shift.Shift;
 import catering.businesslogic.user.User;
@@ -180,7 +181,7 @@ public class SummarySheet {
         return taskList;
     }
 
-    public Assignment addAssignment(KitchenTask t, Shift s, User cook) {
+    public Assignment addAssignment(KitchenTask t, Shift s, Employee cook) {
         Assignment ass = new Assignment(t, s, cook);
         assignmentList.add(ass);
         return ass;
@@ -190,7 +191,7 @@ public class SummarySheet {
         return user.equals(this.owner);
     }
 
-    public Assignment modifyAssignment(Assignment ass, Shift shift, User cook) throws SummarySheetException {
+    public Assignment modifyAssignment(Assignment ass, Shift shift, Employee cook) throws SummarySheetException {
         if (!assignmentList.contains(ass))
             throw new SummarySheetException("Invalid Assignment");
         ass.setShift(shift);

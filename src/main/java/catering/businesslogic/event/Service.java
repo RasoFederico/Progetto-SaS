@@ -348,13 +348,13 @@ public class Service {
 
     private static ArrayList<TeamMember> loadTeam(int serviceId) {
         ArrayList<TeamMember> team = new ArrayList<>();
-        String query = "SELECT * FROM TeamMember WHERE serviceId=?;";
+        String query = "SELECT * FROM TeamMember WHERE service_id=?;";
 
         PersistenceManager.executeQuery(query, rs -> {
             int id = rs.getInt("id");
             String role = rs.getString("role");
             String note = rs.getString("note");
-            String memberTaxId = rs.getString("memberTaxId");
+            String memberTaxId = rs.getString("member_tax_id");
             team.add(
                     new TeamMember(id, serviceId, role, note, memberTaxId)
             );

@@ -31,7 +31,7 @@ public class EmployeeManager {
     }
 
     public static Employee getEmployee(String taxId) {
-        String query = "SELECT * FROM Employee WHERE tax_id = ?";
+        String query = "SELECT * FROM Employees WHERE tax_id = ?";
         Employee e= new Employee();
         PersistenceManager.executeQuery(query, new ResultHandler() {
             @Override

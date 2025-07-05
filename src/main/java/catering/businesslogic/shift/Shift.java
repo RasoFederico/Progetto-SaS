@@ -1,5 +1,7 @@
 package catering.businesslogic.shift;
 
+import catering.businesslogic.employee.Employee;
+import catering.businesslogic.employee.EmployeeManager;
 import catering.businesslogic.user.User;
 import catering.persistence.PersistenceManager;
 import catering.persistence.ResultHandler;
@@ -19,17 +21,17 @@ public class Shift {
     private Date date;
     private Time startTime;
     private Time endTime;
-    private Map<Integer, User> bookedUsers;
+    private Map<String, Employee> bookedEmployees;
 
     private Shift() {
-        bookedUsers = new HashMap<>();
+        bookedEmployees = new HashMap<>();
     }
 
     public Shift(Date date, Time startTime, Time endTime) {
         this.date = date;
         this.startTime = startTime;
         this.endTime = endTime;
-        bookedUsers = new HashMap<>();
+        bookedEmployees = new HashMap<>();
     }
 
     /**
@@ -89,7 +91,7 @@ public class Shift {
                     LOGGER.log(Level.WARNING, "Error parsing date/time in Shift", ex);
                 }
 
-                s.bookedUsers = loadBookings(s);
+                s.bookedEmployees = loadBookings(s);
                 shiftArrayList.add(s);
             }
         });
@@ -150,7 +152,7 @@ public class Shift {
 
         Shift s = shiftHolder[0];
         if (s != null && s.id == id) { // Check if we found the shift
-            s.bookedUsers = loadBookings(s);
+            s.bookedEmployees = loadBookings(s);
             return s;
         }
 
@@ -158,17 +160,17 @@ public class Shift {
         return null; // Return null if shift not found
     }
 
-    private static Map<Integer, User> loadBookings(Shift s) {
-        Map<Integer, User> bookings = new HashMap<>();
-        String query = "SELECT user_id FROM ShiftBookings WHERE shift_id = ?";
+    private static Map<String, Employee> loadBookings(Shift s) {
+        Map<String, Employee> bookings = new HashMap<>();
+        String query = "SELECT employee_id FROM ShiftBookings WHERE shift_id = ?";
 
         PersistenceManager.executeQuery(query, new ResultHandler() {
             @Override
             public void handle(ResultSet rs) throws SQLException {
-                int userId = rs.getInt("user_id");
-                User user = User.load(userId);
-                if (user != null) {
-                    bookings.put(userId, user);
+                String employeeId = rs.getString("employee_id");
+                Employee e = EmployeeManager.getEmployee(employeeId);
+                if (e != null) {
+                    bookings.put(employeeId, e);
                 }
             }
         }, s.id); // Pass s.id as parameter
@@ -182,7 +184,7 @@ public class Shift {
         s.date = date;
         s.startTime = startTime;
         s.endTime = endTime;
-        s.bookedUsers = new HashMap<>();
+        s.bookedEmployees = new HashMap<>();
 
         String query = "INSERT INTO Shifts (date, start_time, end_time) VALUES (?, ?, ?)";
 
@@ -229,21 +231,21 @@ public class Shift {
     }
 
     // Save a booking to the database
-    public void saveBooking(User user) {
-        String query = "INSERT INTO ShiftBookings (shift_id, user_id) VALUES (?, ?)";
-        PersistenceManager.executeUpdate(query, this.id, user.getId());
+    public void saveBooking(Employee employee) {
+        String query = "INSERT INTO ShiftBookings (shift_id, employee_id) VALUES (?, ?)";
+        PersistenceManager.executeUpdate(query, this.id, employee.getTaxId());
 
         // Update local cache
-        bookedUsers.put(user.getId(), user);
+        bookedEmployees.put(employee.getTaxId(), employee);
     }
 
     // Remove a booking from the database
-    public void removeBooking(User user) {
-        String query = "DELETE FROM ShiftBookings WHERE shift_id = ? AND user_id = ?";
-        PersistenceManager.executeUpdate(query, this.id, user.getId());
+    public void removeBooking(Employee employee) {
+        String query = "DELETE FROM ShiftBookings WHERE shift_id = ? AND employee_id = ?";
+        PersistenceManager.executeUpdate(query, this.id, employee.getTaxId());
 
         // Update local cache
-        bookedUsers.remove(user.getId());
+        bookedEmployees.remove(employee.getTaxId());
     }
 
     // INSTANCE METHODS
@@ -260,48 +262,48 @@ public class Shift {
         return endTime;
     }
 
-    public void addBooking(User u) {
-        if (this.bookedUsers.containsKey(u.getId())) {
-            LOGGER.warning("User " + u.getUserName() + " is already booked for this shift");
+    public void addBooking(Employee e) {
+        if (this.bookedEmployees.containsKey(e.getTaxId())) {
+            LOGGER.warning("Employee " + e.getNominative() + " is already booked for this shift");
             return;
         }
 
-        String query = "INSERT INTO ShiftBookings (shift_id, user_id) VALUES (?, ?)";
-        PersistenceManager.executeUpdate(query, this.id, u.getId());
+        String query = "INSERT INTO ShiftBookings (shift_id, employee_id) VALUES (?, ?)";
+        PersistenceManager.executeUpdate(query, this.id, e.getTaxId());
 
-        this.bookedUsers.put(u.getId(), u);
-        LOGGER.info("Added booking for user " + u.getUserName() + " to shift ID " + this.id);
+        this.bookedEmployees.put(e.getTaxId(), e);
+        LOGGER.info("Added booking for user " + e.getNominative() + " to shift ID " + this.id);
     }
 
-    public User removeBookedUser(User u) {
-        if (!this.bookedUsers.containsKey(u.getId())) {
-            LOGGER.warning("User " + u.getUserName() + " is not booked for this shift");
+    public Employee removeBookedEmployee(Employee e) {
+        if (!this.bookedEmployees.containsKey(e.getTaxId())) {
+            LOGGER.warning("Employee " + e.getNominative() + " is not booked for this shift");
             return null;
         }
 
-        String query = "DELETE FROM ShiftBookings WHERE shift_id = ? AND user_id = ?";
-        int rowsAffected = PersistenceManager.executeUpdate(query, this.id, u.getId());
+        String query = "DELETE FROM ShiftBookings WHERE shift_id = ? AND employee_id = ?";
+        int rowsAffected = PersistenceManager.executeUpdate(query, this.id, e.getTaxId());
 
         if (rowsAffected > 0) {
-            User removed = this.bookedUsers.remove(u.getId());
-            LOGGER.info("Removed booking for user " + u.getUserName() + " from shift ID " + this.id);
+            Employee removed = this.bookedEmployees.remove(e.getTaxId());
+            LOGGER.info("Removed booking for employee " + e.getNominative() + " from shift ID " + this.id);
             return removed;
         } else {
-            LOGGER.warning("Failed to remove booking for user " + u.getUserName() + " from shift ID " + this.id);
+            LOGGER.warning("Failed to remove booking for employee " + e.getNominative() + " from shift ID " + this.id);
             return null;
         }
     }
 
-    public boolean isBooked(User u) {
-        return bookedUsers.containsValue(u);
+    public boolean isBooked(Employee e) {
+        return bookedEmployees.containsValue(e);
     }
 
     public int getId() {
         return id;
     }
 
-    public Map<Integer, User> getBookedUsers() {
-        return new HashMap<>(bookedUsers); // Return a copy to prevent modification
+    public Map<String, Employee> getBookedEmployees() {
+        return new HashMap<>(bookedEmployees); // Return a copy to prevent modification
     }
 
     public String toString() {
@@ -313,9 +315,9 @@ public class Shift {
                 .append(endTime)
                 .append(">");
 
-        if (!bookedUsers.isEmpty()) {
-            for (User u : bookedUsers.values()) {
-                sb.append("\n\t - ").append(u.toString());
+        if (!bookedEmployees.isEmpty()) {
+            for (Employee e : bookedEmployees.values()) {
+                sb.append("\n\t - ").append(e.toString());
             }
         }
 

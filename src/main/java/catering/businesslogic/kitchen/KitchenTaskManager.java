@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import catering.businesslogic.CatERing;
 import catering.businesslogic.UseCaseLogicException;
+import catering.businesslogic.employee.Employee;
 import catering.businesslogic.event.Event;
 import catering.businesslogic.event.Service;
 import catering.businesslogic.shift.Shift;
@@ -103,12 +104,12 @@ public class KitchenTaskManager {
         return assignTask(t, s, null);
     }
 
-    public Assignment assignTask(KitchenTask t, Shift s, User cook) throws UseCaseLogicException {
+    public Assignment assignTask(KitchenTask t, Shift s, Employee cook) throws UseCaseLogicException {
         if (currentSumSheet == null) {
             throw new UseCaseLogicException("Cannot assign task because there is no active summary sheet.");
         }
         if (cook != null && !CatERing.getInstance().getShiftManager().isAvailable(cook, s)) {
-            throw new UseCaseLogicException("Cook " + cook.getUserName() + " is not available for the selected shift.");
+            throw new UseCaseLogicException("Cook " + cook.getNominative() + " is not available for the selected shift.");
         }
         Assignment a = currentSumSheet.addAssignment(t, s, cook);
         this.notifyAssignmentAdded(a);
@@ -121,7 +122,7 @@ public class KitchenTaskManager {
         modifyAssignment(ass, shift, null);
     }
 
-    public void modifyAssignment(Assignment ass, User cook) throws UseCaseLogicException, SummarySheetException {
+    public void modifyAssignment(Assignment ass, Employee cook) throws UseCaseLogicException, SummarySheetException {
         Shift shift = ass.getShift();
         modifyAssignment(ass, shift, cook);
     }
@@ -130,7 +131,7 @@ public class KitchenTaskManager {
         modifyAssignment(ass, shift, null);
     }
 
-    public void modifyAssignment(Assignment ass, Shift shift, User cook)
+    public void modifyAssignment(Assignment ass, Shift shift, Employee cook)
             throws UseCaseLogicException, SummarySheetException {
         Assignment a;
 

@@ -183,8 +183,8 @@ CREATE TABLE
 CREATE TABLE
     `ShiftBookings` (
         `shift_id` INTEGER NOT NULL,
-        `user_id` INTEGER NOT NULL,
-        PRIMARY KEY (`shift_id`, `user_id`)
+        `employee_id` TEXT NOT NULL,
+        PRIMARY KEY (`shift_id`, `employee_id`)
     );
 
 CREATE TABLE
@@ -217,11 +217,11 @@ CREATE TABLE
         `id` INTEGER PRIMARY KEY AUTOINCREMENT,
         `sumsheet_id` INTEGER NOT NULL,
         `task_id` INTEGER NOT NULL,
-        `cook_id` INTEGER NOT NULL,
+        `cook_id` TEXT NOT NULL,
         `shift_id` INTEGER NOT NULL,
         FOREIGN KEY (`sumsheet_id`) REFERENCES `SummarySheets` (`id`),
         FOREIGN KEY (`task_id`) REFERENCES `Tasks` (`id`),
-        FOREIGN KEY (`cook_id`) REFERENCES `Users` (`id`),
+        FOREIGN KEY (`cook_id`) REFERENCES `Employees` (`tax_id`),
         FOREIGN KEY (`shift_id`) REFERENCES `Shifts` (`id`)
     );
 
@@ -1012,7 +1012,7 @@ INSERT INTO Employees(tax_id, nominative, contact, address, remaining_holidays, 
 
 
 INSERT INTO HolidayRequest(employee, from_date, to_date, state)
-VALUES ('VWDNCG45P08L809U', '2025-08-01', '2025-08-05', 2);
+VALUES ('VWDNCG45P08L809U', date('2025-08-01'), date('2025-08-05'), 2);
 
 -- First create a menu
 INSERT INTO Menus (title, owner_id, published) 
@@ -1053,7 +1053,7 @@ FROM Recipes r WHERE r.name = 'Gelato Artigianale';
 
 -- Create a new event
 INSERT INTO Events (name, date_start, date_end, chef_id) VALUES 
-('Gala Aziendale Annuale', date('2025-06-15'), date('2025-06-16'), 5);  -- Assigned to Antonio
+('Gala Aziendale Annuale', date('2025-06-15'), date('2025-06-16'), 3);  -- Assigned to Antonio
 
 -- Create two services for this event
 -- First service (lunch): assigned to chef Antonio (ID 5) with the existing menu (ID 1)

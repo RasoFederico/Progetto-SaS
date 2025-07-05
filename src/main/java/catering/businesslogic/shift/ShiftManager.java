@@ -1,5 +1,6 @@
 package catering.businesslogic.shift;
 
+import catering.businesslogic.employee.Employee;
 import catering.businesslogic.user.User;
 import catering.util.LogManager;
 
@@ -37,12 +38,12 @@ public class ShiftManager {
     /**
      * Checks if a user is available for a shift
      * 
-     * @param u The user to check
+     * @param e The employee to check
      * @param s The shift to check
      * @return true if the user is available (not booked) for the shift
      */
-    public boolean isAvailable(User u, Shift s) {
-        return s.isBooked(u);
+    public boolean isAvailable(Employee e, Shift s) {
+        return s.isBooked(e);
     }
 
     /**
@@ -80,40 +81,40 @@ public class ShiftManager {
     }
 
     /**
-     * Books a user for a shift
+     * Books a employee for a shift
      * 
      * @param shift The shift to book
-     * @param user  The user to book for the shift
+     * @param employee  The employee to book for the shift
      */
-    public void bookUserForShift(Shift shift, User user) {
-        if (isAvailable(user, shift)) {
-            LOGGER.info("Booking user " + user.getUserName() + " for shift ID: " + shift.getId());
-            shift.addBooking(user);
+    public void bookUserForShift(Shift shift, Employee employee) {
+        if (isAvailable(employee, shift)) {
+            LOGGER.info("Booking employee " + employee.getNominative() + " for shift ID: " + shift.getId());
+            shift.addBooking(employee);
         } else {
-            LOGGER.warning("User " + user.getUserName() + " is already booked for shift ID: " + shift.getId());
+            LOGGER.warning("User " + employee.getNominative() + " is already booked for shift ID: " + shift.getId());
         }
     }
 
     /**
-     * Removes a user's booking from a shift
+     * Removes a employee's booking from a shift
      * 
      * @param shift The shift to remove the booking from
-     * @param user  The user to remove from the shift
-     * @return The removed user or null if not booked
+     * @param employee The employee to remove from the shift
+     * @return The removed employee or null if not booked
      */
-    public User removeUserFromShift(Shift shift, User user) {
-        LOGGER.info("Removing user " + user.getUserName() + " from shift ID: " + shift.getId());
-        return shift.removeBookedUser(user);
+    public Employee removeEmployeeFromShift(Shift shift, Employee employee) {
+        LOGGER.info("Removing employee " + employee.getNominative() + " from shift ID: " + shift.getId());
+        return shift.removeBookedEmployee(employee);
     }
 
     /**
-     * Gets all users booked for a shift
+     * Gets all employees booked for a shift
      * 
      * @param shift The shift to check
-     * @return Map of user IDs to User objects
+     * @return Map of employee IDs to Employee objects
      */
-    public Map<Integer, User> getBookedUsers(Shift shift) {
-        return shift.getBookedUsers();
+    public Map<String, Employee> getBookedEmployee(Shift shift) {
+        return shift.getBookedEmployees();
     }
 
     /**
