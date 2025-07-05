@@ -36,14 +36,14 @@ public class Employee {
     public boolean save() {
         int roleNumeric = (this.isCook()) ? 0 : 3;
 
-        String query = "INSERT INTO Employee (tax_id, nominative, contact, address, remaining_holidays, permanent, role) VALUES(?, ?, ?, ?, ?, ?, ?)";
+        String query = "INSERT INTO Employees (tax_id, nominative, contact, address, remaining_holidays, permanent, role) VALUES(?, ?, ?, ?, ?, ?, ?)";
 
         int res=PersistenceManager.executeUpdate(query,this.taxId, this.nominative, this.contact, this.address, this.remainingHolidays, this.permanent, roleNumeric );
         return res != 0;
     }
 
     public boolean delete(){
-        String query = "DELETE FROM Employee WHERE tax_id = ?";
+        String query = "DELETE FROM Employees WHERE tax_id = ?";
         int res=PersistenceManager.executeUpdate(query,this.taxId);
         return res != 0;
     }

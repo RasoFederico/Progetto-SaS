@@ -20,7 +20,7 @@ public class HolidaysManager {
         return hr.update();
     }
 
-    public static List<HolidayRequest> getHolidayRequests() {
+    public List<HolidayRequest> getHolidayRequests() {
         ArrayList<HolidayRequest> requests = new ArrayList<>();
         String query ="SELECT * FROM HolidayRequest";
 
@@ -40,7 +40,7 @@ public class HolidaysManager {
     }
 
 
-    public static List<HolidayRequest> getPendingHolidayRequests(String employee) {
+    public List<HolidayRequest> getPendingHolidayRequests(String employee) {
         ArrayList<HolidayRequest> requests = new ArrayList<>();
         String query ="SELECT * FROM HolidayRequest WHERE state = ?";
 

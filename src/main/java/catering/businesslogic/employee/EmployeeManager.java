@@ -7,25 +7,23 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class EmployeeManager {
-    public boolean addEmployee(String nominative, String contact, String address, String taxId, Employee.EmployeeRole role) {
-        Employee employee = new Employee(nominative, contact, address, taxId, 0, role);
+    public boolean addEmployee(String nominative, String contact, String address, String taxId,int remainingHolidays, Employee.EmployeeRole role) {
+        Employee employee = new Employee(nominative, contact, address, taxId, remainingHolidays, role);
         return employee.save();
     }
 
     public boolean deleteEmployee(Employee employee) {
-        String query = "DELETE FROM Employee WHERE tax_id = ?";
-        int res = PersistenceManager.executeUpdate(query, employee.getTaxId());
-        return res!=0;
+        return employee.delete();
     }
 
     public boolean updateEmployee(Employee updatedEmployee) {
-        String query = "UPDATE Employee SET nominative = ?, contact = ?, address = ?, remaining_holidays = ?, role = ? WHERE tax_id = ? ";
+        String query = "UPDATE Employees SET nominative = ?, contact = ?, address = ?, remaining_holidays = ?, role = ? WHERE tax_id = ? ";
         int res = PersistenceManager.executeUpdate(query, updatedEmployee.getNominative(), updatedEmployee.getContact(), updatedEmployee.getAddress(), (updatedEmployee.isCook()?0:3), updatedEmployee.getTaxId());
         return res!=0;
     }
 
     public  boolean promoteEmployee(Employee employee) {
-        String query = "UPDATE Employee SET permanent = ? WHERE tax_id = ? ";
+        String query = "UPDATE Employees SET permanent = ? WHERE tax_id = ? ";
         int res = PersistenceManager.executeUpdate(query, true, employee.getTaxId());
         return res!=0;
     }
@@ -42,8 +40,6 @@ public class EmployeeManager {
                 e.setAddress(rs.getString("address"));
                 e.setPermanent(rs.getBoolean("permanent"));
                 e.setRemainingHolidays(rs.getInt("remaining_holidays"));
-                e.setRole(Employee.EmployeeRole.values()[rs.getInt("role")]);
-
                 int role = (rs.getInt("role")) == 0 ? 0:1;
                 e.setRole(Employee.EmployeeRole.values()[role]);
             }
