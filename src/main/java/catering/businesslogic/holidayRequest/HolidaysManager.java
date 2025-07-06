@@ -14,21 +14,21 @@ import java.util.List;
 public class HolidaysManager {
     public boolean acceptRequest(HolidayRequest hr) throws UseCaseLogicException {
         if(!UserManager.getInstance().getCurrentUser().isOwner())
-            throw new UseCaseLogicException("Only organizer can add emoloyee to team");
+            throw new UseCaseLogicException("Only owner can accept a holiday request");
         hr.setState(HolidayRequest.RequestState.ACCEPTED);
         return hr.update();
     }
 
     public boolean rejectRequest(HolidayRequest hr) throws UseCaseLogicException {
         if(!UserManager.getInstance().getCurrentUser().isOwner())
-            throw new UseCaseLogicException("Only organizer can add emoloyee to team");
+            throw new UseCaseLogicException("Only owner can reject a holiday request");
         hr.setState(HolidayRequest.RequestState.REJECTED);
         return hr.update();
     }
 
     public List<HolidayRequest> getHolidayRequests() throws UseCaseLogicException {
         if(!UserManager.getInstance().getCurrentUser().isOwner())
-            throw new UseCaseLogicException("Only organizer can add emoloyee to team");
+            throw new UseCaseLogicException("Only organizer can get holiday requests list");
         ArrayList<HolidayRequest> requests = new ArrayList<>();
         String query ="SELECT * FROM HolidayRequest";
 
@@ -50,7 +50,7 @@ public class HolidaysManager {
 
     public List<HolidayRequest> getPendingHolidayRequests(String employee) throws UseCaseLogicException {
         if(!UserManager.getInstance().getCurrentUser().isOwner())
-            throw new UseCaseLogicException("Only organizer can add emoloyee to team");
+            throw new UseCaseLogicException("Only owner can get pending holiday requests list");
         ArrayList<HolidayRequest> requests = new ArrayList<>();
         String query ="SELECT * FROM HolidayRequest WHERE state = ?";
 

@@ -13,28 +13,28 @@ import java.util.List;
 public class EmployeeManager {
     public boolean addEmployee(String nominative, String contact, String address, String taxId,int remainingHolidays, Employee.EmployeeRole role) throws UseCaseLogicException {
         if(!UserManager.getInstance().getCurrentUser().isOwner())
-            throw new UseCaseLogicException("Only organizer can add emoloyee to team");
+            throw new UseCaseLogicException("Only owner can add a mew employee");
         Employee employee = new Employee(nominative, contact, address, taxId, remainingHolidays, role);
         return employee.save();
     }
 
     public boolean deleteEmployee(Employee employee) throws UseCaseLogicException {
         if(!UserManager.getInstance().getCurrentUser().isOrganizer())
-            throw new UseCaseLogicException("Only organizer can add emoloyee to team");
+            throw new UseCaseLogicException("Only organizer can delete employee");
         return employee.delete();
     }
 
     public boolean updateEmployee(Employee updatedEmployee) throws UseCaseLogicException {
         if(!UserManager.getInstance().getCurrentUser().isOrganizer())
-            throw new UseCaseLogicException("Only organizer can add emoloyee to team");
+            throw new UseCaseLogicException("Only organizer can update employee's data");
         String query = "UPDATE Employees SET nominative = ?, contact = ?, address = ?, remaining_holidays = ?, role = ? WHERE tax_id = ? ";
-        int res = PersistenceManager.executeUpdate(query, updatedEmployee.getNominative(), updatedEmployee.getContact(), updatedEmployee.getAddress(), (updatedEmployee.isCook()?0:3), updatedEmployee.getTaxId());
+        int res = PersistenceManager.executeUpdate(query, updatedEmployee.getNominative(), updatedEmployee.getContact(), updatedEmployee.getAddress(), updatedEmployee.getRemainingHolidays(),(updatedEmployee.isCook()?0:3), updatedEmployee.getTaxId());
         return res!=0;
     }
 
     public  boolean promoteEmployee(Employee employee) throws UseCaseLogicException {
         if(!UserManager.getInstance().getCurrentUser().isOrganizer())
-            throw new UseCaseLogicException("Only organizer can add emoloyee to team");
+            throw new UseCaseLogicException("Only owner can promote employees");
         String query = "UPDATE Employees SET permanent = ? WHERE tax_id = ? ";
         int res = PersistenceManager.executeUpdate(query, true, employee.getTaxId());
         return res!=0;
@@ -42,7 +42,7 @@ public class EmployeeManager {
 
     public List<Employee> getEmployees(boolean... permanent) throws UseCaseLogicException {
         if(!UserManager.getInstance().getCurrentUser().isOrganizer())
-            throw new UseCaseLogicException("Only organizer can add emoloyee to team");
+            throw new UseCaseLogicException("Only organizer can get employees list");
         ArrayList<Employee> list = new ArrayList<>();
 
         if(permanent.length == 0){
@@ -87,14 +87,19 @@ public class EmployeeManager {
 
     public static Employee getEmployee(String taxId) {
         String query = "SELECT * FROM Employees WHERE tax_id = ?";
-        Employee e= new Employee();
+        Employee[] result = new Employee[1];
+
         PersistenceManager.executeQuery(query, new ResultHandler() {
             @Override
             public void handle(ResultSet rs) throws SQLException {
+                Employee e = new Employee();
                 assignValues(rs, e);
+                result[0] = e;
+
             }
         }, taxId);
-        return e;
+
+        return result[0];
     }
 
     private static void assignValues(ResultSet rs, Employee e) throws SQLException {

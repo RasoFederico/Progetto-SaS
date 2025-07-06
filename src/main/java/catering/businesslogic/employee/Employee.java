@@ -99,4 +99,8 @@ public class Employee {
     public void setRole(EmployeeRole role) {
         this.role = role;
     }
+
+    public String toString() {
+        return this.nominative;
+    }
 }
