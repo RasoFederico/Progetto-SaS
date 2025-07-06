@@ -109,6 +109,10 @@ public class Service {
         this.menu = menu;
     }
 
+    public List<TeamMember> getTeam() {
+        return team;
+    }
+
     public void approveMenu() {
         if (this.menu == null)
             return;
@@ -376,12 +380,12 @@ public class Service {
         }
     }
 
-    public boolean addEmoloyeeToTeam(Employee employee, String r) throws UseCaseLogicException {
+    public boolean addEmployeeToTeam(Employee employee, String role) throws UseCaseLogicException {
         if(!UserManager.getInstance().getCurrentUser().isOrganizer())
             throw new UseCaseLogicException("Only organizer can add emoloyee to team");
         for(TeamMember slot : team){
-            String role = slot.getRole();
-            if(role.equals(r)){
+            String r = slot.getRole();
+            if(r.equals(role)){
                 String id = slot.getMemberTaxId();
                 if(id==null){
                     slot.setMemberTaxId(employee.getTaxId());

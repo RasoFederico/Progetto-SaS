@@ -1,6 +1,8 @@
 package catering.businesslogic.event;
 
+import catering.businesslogic.UseCaseLogicException;
 import catering.businesslogic.employee.Employee;
+import catering.businesslogic.user.UserManager;
 import catering.persistence.PersistenceManager;
 
 public class TeamMember {
@@ -52,7 +54,9 @@ public class TeamMember {
         this.role = role;
     }
 
-    public void setNote(String note) {
+    public void setNote(String note) throws UseCaseLogicException {
+        if(!UserManager.getInstance().getCurrentUser().isOrganizer())
+            throw new UseCaseLogicException("Only organizer can set note");
         this.note = note;
     }
 
@@ -74,5 +78,12 @@ public class TeamMember {
 
     public String getMemberTaxId() {
         return memberTaxId;
+    }
+
+    @Override
+    public String toString() {
+        if (memberTaxId != null)
+            return memberTaxId + " with " + role + " role";
+        return "empty slot for " + role + " role";
     }
 }

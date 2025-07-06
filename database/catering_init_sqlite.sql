@@ -1100,7 +1100,7 @@ INSERT INTO TeamMember(
     note,
     member_tax_id
 ) VALUES (
-    1,
+    2,
     'Cuoco Pesce',
     '',
     'TSCZLX89C21I585K'
@@ -1112,7 +1112,7 @@ INSERT INTO TeamMember(
     note,
     member_tax_id
 ) VALUES (
-    1,
+    2,
     'Cameriere',
     '',
     'ZPQDQC55A20L145B'

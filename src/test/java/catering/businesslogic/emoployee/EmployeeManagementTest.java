@@ -54,7 +54,7 @@ public class EmployeeManagementTest {
 
             Employee e = EmployeeManager.getEmployee("RSAFRC03A02A124L");
             assertNotNull(e, "the new employee should be present in the database");
-            assertEquals(e.getTaxId(), "RSAFRC03A02A124L", "the new employee tax id should match");
+            assertEquals("RSAFRC03A02A124L", e.getTaxId(), "the new employee tax id should match");
         }catch (Exception e){
             LOGGER.severe(e.getMessage());
         }
