@@ -1,6 +1,8 @@
 package catering.businesslogic.holidayRequest;
 
+import catering.businesslogic.UseCaseLogicException;
 import catering.businesslogic.employee.EmployeeManager;
+import catering.businesslogic.user.UserManager;
 import catering.persistence.PersistenceManager;
 import catering.persistence.ResultHandler;
 
@@ -10,17 +12,23 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class HolidaysManager {
-    public boolean acceptRequest(HolidayRequest hr) {
+    public boolean acceptRequest(HolidayRequest hr) throws UseCaseLogicException {
+        if(!UserManager.getInstance().getCurrentUser().isOwner())
+            throw new UseCaseLogicException("Only organizer can add emoloyee to team");
         hr.setState(HolidayRequest.RequestState.ACCEPTED);
         return hr.update();
     }
 
-    public boolean rejectRequest(HolidayRequest hr) {
+    public boolean rejectRequest(HolidayRequest hr) throws UseCaseLogicException {
+        if(!UserManager.getInstance().getCurrentUser().isOwner())
+            throw new UseCaseLogicException("Only organizer can add emoloyee to team");
         hr.setState(HolidayRequest.RequestState.REJECTED);
         return hr.update();
     }
 
-    public List<HolidayRequest> getHolidayRequests() {
+    public List<HolidayRequest> getHolidayRequests() throws UseCaseLogicException {
+        if(!UserManager.getInstance().getCurrentUser().isOwner())
+            throw new UseCaseLogicException("Only organizer can add emoloyee to team");
         ArrayList<HolidayRequest> requests = new ArrayList<>();
         String query ="SELECT * FROM HolidayRequest";
 
@@ -40,7 +48,9 @@ public class HolidaysManager {
     }
 
 
-    public List<HolidayRequest> getPendingHolidayRequests(String employee) {
+    public List<HolidayRequest> getPendingHolidayRequests(String employee) throws UseCaseLogicException {
+        if(!UserManager.getInstance().getCurrentUser().isOwner())
+            throw new UseCaseLogicException("Only organizer can add emoloyee to team");
         ArrayList<HolidayRequest> requests = new ArrayList<>();
         String query ="SELECT * FROM HolidayRequest WHERE state = ?";
 

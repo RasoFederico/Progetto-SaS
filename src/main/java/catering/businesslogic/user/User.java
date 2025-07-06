@@ -63,6 +63,10 @@ public class User {
         return roles.contains(Role.ORGANIZER);
     }
 
+    public boolean isOwner(){
+        return roles.contains(Role.OWNER);
+    }
+
     /**
      * Sets the username for this user
      * 

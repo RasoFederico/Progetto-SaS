@@ -364,6 +364,8 @@ public class Service {
     }
 
     public void createTeam(List<String> roles) throws UseCaseLogicException {
+        if(!UserManager.getInstance().getCurrentUser().isOrganizer())
+            throw new UseCaseLogicException("Only organizer can add emoloyee to team");
         if (!team.isEmpty())
             throw new UseCaseLogicException("Team for this service already exists.");
         team = new ArrayList<>();
