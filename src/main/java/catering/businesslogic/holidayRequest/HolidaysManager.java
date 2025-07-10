@@ -6,6 +6,7 @@ import catering.businesslogic.user.UserManager;
 import catering.persistence.PersistenceManager;
 import catering.persistence.ResultHandler;
 
+import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -38,8 +39,16 @@ public class HolidaysManager {
                 HolidayRequest hr = new HolidayRequest();
                 hr.setId(rs.getInt("id"));
                 hr.setState(HolidayRequest.RequestState.values()[rs.getInt("state")]);
-                hr.setFrom(rs.getDate("from"));
-                hr.setTo(rs.getDate("to"));
+                String dateStr = rs.getString("from_date");
+                if (dateStr != null && !dateStr.isEmpty()) {
+                    Date sqlDate = Date.valueOf(dateStr);
+                    hr.setFrom(sqlDate);
+                }
+                dateStr = rs.getString("to_date");
+                if (dateStr != null && !dateStr.isEmpty()) {
+                    Date sqlDate = Date.valueOf(dateStr);
+                    hr.setTo(sqlDate);
+                }
                 hr.setEmployee(EmployeeManager.getEmployee(rs.getString("employee")));
                 requests.add(hr);
             }
@@ -48,7 +57,7 @@ public class HolidaysManager {
     }
 
 
-    public List<HolidayRequest> getPendingHolidayRequests(String employee) throws UseCaseLogicException {
+    public List<HolidayRequest> getPendingHolidayRequests() throws UseCaseLogicException {
         if(!UserManager.getInstance().getCurrentUser().isOwner())
             throw new UseCaseLogicException("Only owner can get pending holiday requests list");
         ArrayList<HolidayRequest> requests = new ArrayList<>();
@@ -60,8 +69,16 @@ public class HolidaysManager {
                 HolidayRequest hr = new HolidayRequest();
                 hr.setId(rs.getInt("id"));
                 hr.setState(HolidayRequest.RequestState.values()[rs.getInt("state")]);
-                hr.setFrom(rs.getDate("from"));
-                hr.setTo(rs.getDate("to"));
+                String dateStr = rs.getString("from_date");
+                if (dateStr != null && !dateStr.isEmpty()) {
+                    Date sqlDate = Date.valueOf(dateStr);
+                    hr.setFrom(sqlDate);
+                }
+                dateStr = rs.getString("to_date");
+                if (dateStr != null && !dateStr.isEmpty()) {
+                    Date sqlDate = Date.valueOf(dateStr);
+                    hr.setTo(sqlDate);
+                }
                 hr.setEmployee(EmployeeManager.getEmployee(rs.getString("employee")));
                 requests.add(hr);
             }
