@@ -6,6 +6,7 @@ import catering.businesslogic.employee.Employee;
 import catering.businesslogic.employee.EmployeeManager;
 import catering.businesslogic.event.Service;
 import catering.businesslogic.event.TeamMember;
+import catering.businesslogic.holidayRequest.HolidaysManager;
 import catering.businesslogic.user.User;
 import catering.persistence.PersistenceManager;
 import catering.util.LogManager;
@@ -107,6 +108,46 @@ public class TeamManagementTest {
             LOGGER.info("Successfully set notes for team members");
         } catch (UseCaseLogicException e) {
             LOGGER.severe(e.getMessage());
+        }
+    }
+
+    @Test
+    @Order(4)
+    void testTeamAlreadyExists() {
+        LOGGER.info("Testing team is already created");
+
+        try {
+            assertThrows(UseCaseLogicException.class, () -> {
+                testService.createTeam(List.of("role"));
+            }, "getEmployees should throw exception for non-owner");
+
+
+        } catch (Exception e) {
+            LOGGER.severe("Setup failed: " + e.getMessage());
+            fail("Unexpected exception during setup: " + e.getMessage());
+        }
+    }
+
+    @Test
+    @Order(5)
+    void testAccessDeniedForNonOwner() {
+        LOGGER.info("Testing access restriction for non-owner users");
+        EmployeeManager employeeMgr = app.getEmployeeManager();
+
+        try {
+            User normalUser = User.load("Antonio");
+            assertNotNull(normalUser, "normal user should exist");
+            assertFalse(normalUser.isOrganizer(), "user should NOT have organizer role");
+
+            app.getUserManager().fakeLogin(normalUser.getUserName());
+
+            assertThrows(UseCaseLogicException.class, () -> {
+                List<Employee> list = employeeMgr.getEmployees();
+                testService.addEmployeeToTeam(list.get(0), "cameriere");
+            });
+        } catch (UseCaseLogicException e) {
+            LOGGER.severe("Setup failed: " + e.getMessage());
+            fail("Unexpected exception during setup: " + e.getMessage());
         }
     }
 }

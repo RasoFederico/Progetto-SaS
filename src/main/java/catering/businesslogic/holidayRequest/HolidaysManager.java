@@ -5,6 +5,7 @@ import catering.businesslogic.employee.EmployeeManager;
 import catering.businesslogic.user.UserManager;
 import catering.persistence.PersistenceManager;
 import catering.persistence.ResultHandler;
+import catering.util.DateUtils;
 
 import java.sql.Date;
 import java.sql.ResultSet;
@@ -31,7 +32,7 @@ public class HolidaysManager {
         if(!UserManager.getInstance().getCurrentUser().isOwner())
             throw new UseCaseLogicException("Only organizer can get holiday requests list");
         ArrayList<HolidayRequest> requests = new ArrayList<>();
-        String query ="SELECT * FROM HolidayRequest";
+        String query ="SELECT * FROM HolidayRequest;";
 
         PersistenceManager.executeQuery(query, new ResultHandler() {
             @Override
@@ -39,16 +40,8 @@ public class HolidaysManager {
                 HolidayRequest hr = new HolidayRequest();
                 hr.setId(rs.getInt("id"));
                 hr.setState(HolidayRequest.RequestState.values()[rs.getInt("state")]);
-                String dateStr = rs.getString("from_date");
-                if (dateStr != null && !dateStr.isEmpty()) {
-                    Date sqlDate = Date.valueOf(dateStr);
-                    hr.setFrom(sqlDate);
-                }
-                dateStr = rs.getString("to_date");
-                if (dateStr != null && !dateStr.isEmpty()) {
-                    Date sqlDate = Date.valueOf(dateStr);
-                    hr.setTo(sqlDate);
-                }
+                hr.setFrom(DateUtils.getDateFromResultSet(rs,"from_date"));
+                hr.setTo(DateUtils.getDateFromResultSet(rs,"to_date"));
                 hr.setEmployee(EmployeeManager.getEmployee(rs.getString("employee")));
                 requests.add(hr);
             }
@@ -61,7 +54,7 @@ public class HolidaysManager {
         if(!UserManager.getInstance().getCurrentUser().isOwner())
             throw new UseCaseLogicException("Only owner can get pending holiday requests list");
         ArrayList<HolidayRequest> requests = new ArrayList<>();
-        String query ="SELECT * FROM HolidayRequest WHERE state = ?";
+        String query ="SELECT * FROM HolidayRequest WHERE state = ?;";
 
         PersistenceManager.executeQuery(query, new ResultHandler() {
             @Override
@@ -69,16 +62,8 @@ public class HolidaysManager {
                 HolidayRequest hr = new HolidayRequest();
                 hr.setId(rs.getInt("id"));
                 hr.setState(HolidayRequest.RequestState.values()[rs.getInt("state")]);
-                String dateStr = rs.getString("from_date");
-                if (dateStr != null && !dateStr.isEmpty()) {
-                    Date sqlDate = Date.valueOf(dateStr);
-                    hr.setFrom(sqlDate);
-                }
-                dateStr = rs.getString("to_date");
-                if (dateStr != null && !dateStr.isEmpty()) {
-                    Date sqlDate = Date.valueOf(dateStr);
-                    hr.setTo(sqlDate);
-                }
+                hr.setFrom(DateUtils.getDateFromResultSet(rs,"from_date"));
+                hr.setTo(DateUtils.getDateFromResultSet(rs,"to_date"));
                 hr.setEmployee(EmployeeManager.getEmployee(rs.getString("employee")));
                 requests.add(hr);
             }

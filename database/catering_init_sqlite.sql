@@ -1014,6 +1014,9 @@ INSERT INTO Employees(tax_id, nominative, contact, address, remaining_holidays, 
 INSERT INTO HolidayRequest(employee, from_date, to_date, state)
 VALUES ('VWDNCG45P08L809U', date('2025-08-01'), date('2025-08-05'), 2);
 
+INSERT INTO HolidayRequest(employee, from_date, to_date, state)
+VALUES ('VWDNCG45P08L809U', date('2025-07-11'), date('2025-07-18'), 2);
+
 -- First create a menu
 INSERT INTO Menus (title, owner_id, published) 
 VALUES ('Sample Menu', 5, 1);  -- Created by Antonio (chef), and published
