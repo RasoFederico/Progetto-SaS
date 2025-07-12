@@ -105,8 +105,8 @@ fontsize=11
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>690</x>
-      <y>0</y>
+      <x>560</x>
+      <y>10</y>
       <w>340</w>
       <h>40</h>
     </coordinates>

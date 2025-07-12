@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <diagram program="umlet" version="15.1">
-  <zoom_level>9</zoom_level>
+  <zoom_level>7</zoom_level>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>315</x>
-      <y>135</y>
-      <w>27</w>
-      <h>765</h>
+      <x>308</x>
+      <y>294</y>
+      <w>21</w>
+      <h>595</h>
     </coordinates>
     <panel_attributes>lt=.</panel_attributes>
     <additional_attributes>10.0;10.0;10.0;830.0</additional_attributes>
@@ -15,10 +15,10 @@
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>315</x>
-      <y>180</y>
-      <w>297</w>
-      <h>36</h>
+      <x>308</x>
+      <y>329</y>
+      <w>231</w>
+      <h>28</h>
     </coordinates>
     <panel_attributes>lt=&lt;&lt;&lt;-
 rejectHolidayRequest(request)</panel_attributes>
@@ -27,10 +27,10 @@ rejectHolidayRequest(request)</panel_attributes>
   <element>
     <id>UMLGeneric</id>
     <coordinates>
-      <x>468</x>
-      <y>99</y>
-      <w>261</w>
-      <h>45</h>
+      <x>427</x>
+      <y>266</y>
+      <w>203</w>
+      <h>35</h>
     </coordinates>
     <panel_attributes>:
 HolidaysManager</panel_attributes>
@@ -39,10 +39,10 @@ HolidaysManager</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>594</x>
-      <y>135</y>
-      <w>27</w>
-      <h>792</h>
+      <x>525</x>
+      <y>294</y>
+      <w>21</w>
+      <h>616</h>
     </coordinates>
     <panel_attributes>lt=.</panel_attributes>
     <additional_attributes>10.0;10.0;10.0;860.0</additional_attributes>
@@ -50,10 +50,10 @@ HolidaysManager</panel_attributes>
   <element>
     <id>UMLGeneric</id>
     <coordinates>
-      <x>594</x>
-      <y>198</y>
-      <w>18</w>
-      <h>432</h>
+      <x>525</x>
+      <y>343</y>
+      <w>14</w>
+      <h>336</h>
     </coordinates>
     <panel_attributes/>
     <additional_attributes/>
@@ -61,10 +61,10 @@ HolidaysManager</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>315</x>
-      <y>270</y>
-      <w>297</w>
-      <h>36</h>
+      <x>308</x>
+      <y>399</y>
+      <w>231</w>
+      <h>28</h>
     </coordinates>
     <panel_attributes>lt=&lt;.
 throw UseCaseLogicException</panel_attributes>
@@ -73,10 +73,10 @@ throw UseCaseLogicException</panel_attributes>
   <element>
     <id>UMLPackage</id>
     <coordinates>
-      <x>288</x>
-      <y>81</y>
-      <w>81</w>
-      <h>63</h>
+      <x>287</x>
+      <y>252</y>
+      <w>63</w>
+      <h>49</h>
     </coordinates>
     <panel_attributes>UI</panel_attributes>
     <additional_attributes/>
@@ -84,10 +84,10 @@ throw UseCaseLogicException</panel_attributes>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>612</x>
-      <y>0</y>
-      <w>306</w>
-      <h>36</h>
+      <x>483</x>
+      <y>189</y>
+      <w>238</w>
+      <h>28</h>
     </coordinates>
     <panel_attributes>halign=center
 *13a.1 rejectHolidayRequest*
@@ -99,10 +99,10 @@ fontsize=20
   <element>
     <id>UMLFrame</id>
     <coordinates>
-      <x>108</x>
-      <y>243</y>
-      <w>1071</w>
-      <h>738</h>
+      <x>147</x>
+      <y>378</y>
+      <w>833</w>
+      <h>574</h>
     </coordinates>
     <panel_attributes>alt 
 fg=#761C8C
@@ -120,10 +120,10 @@ fontsize=11
   <element>
     <id>UMLGeneric</id>
     <coordinates>
-      <x>756</x>
-      <y>99</y>
-      <w>162</w>
-      <h>45</h>
+      <x>651</x>
+      <y>266</y>
+      <w>126</w>
+      <h>35</h>
     </coordinates>
     <panel_attributes>request:
 HolidayRequest</panel_attributes>
@@ -132,10 +132,10 @@ HolidayRequest</panel_attributes>
   <element>
     <id>UMLGeneric</id>
     <coordinates>
-      <x>819</x>
-      <y>360</y>
-      <w>18</w>
-      <h>90</h>
+      <x>700</x>
+      <y>469</y>
+      <w>14</w>
+      <h>70</h>
     </coordinates>
     <panel_attributes/>
     <additional_attributes/>
@@ -143,10 +143,10 @@ HolidayRequest</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>828</x>
-      <y>378</y>
-      <w>126</w>
-      <h>63</h>
+      <x>707</x>
+      <y>483</y>
+      <w>98</w>
+      <h>49</h>
     </coordinates>
     <panel_attributes>lt=&lt;&lt;&lt;-
 this.state=state</panel_attributes>
@@ -155,10 +155,10 @@ this.state=state</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>819</x>
-      <y>135</y>
-      <w>27</w>
-      <h>495</h>
+      <x>700</x>
+      <y>294</y>
+      <w>21</w>
+      <h>385</h>
     </coordinates>
     <panel_attributes>lt=.</panel_attributes>
     <additional_attributes>10.0;10.0;10.0;530.0</additional_attributes>
@@ -166,10 +166,10 @@ this.state=state</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>603</x>
-      <y>351</y>
-      <w>234</w>
-      <h>36</h>
+      <x>532</x>
+      <y>462</y>
+      <w>182</w>
+      <h>28</h>
     </coordinates>
     <panel_attributes>lt=&lt;&lt;&lt;-
 setState(REJECTED)</panel_attributes>
@@ -178,10 +178,10 @@ setState(REJECTED)</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>603</x>
-      <y>477</y>
-      <w>234</w>
-      <h>36</h>
+      <x>532</x>
+      <y>560</y>
+      <w>182</w>
+      <h>28</h>
     </coordinates>
     <panel_attributes>lt=&lt;&lt;&lt;-
 save()</panel_attributes>
@@ -190,10 +190,10 @@ save()</panel_attributes>
   <element>
     <id>UMLGeneric</id>
     <coordinates>
-      <x>819</x>
-      <y>486</y>
-      <w>18</w>
-      <h>90</h>
+      <x>700</x>
+      <y>567</y>
+      <w>14</w>
+      <h>70</h>
     </coordinates>
     <panel_attributes/>
     <additional_attributes/>
