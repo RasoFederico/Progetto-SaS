@@ -127,7 +127,7 @@ public class HolidaysManagementTest {
     }
 
     @Test
-    @Order(4)
+    @Order(3)
     void testAccessDeniedForNonOwner() {
         LOGGER.info("Testing access restriction for non-owner users");
         HolidaysManager hm = app.getHolidaysManager();
