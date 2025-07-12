@@ -380,6 +380,19 @@ public class Service {
         }
     }
 
+    public void extendTeam(List<String> roles) throws UseCaseLogicException {
+        if(!UserManager.getInstance().getCurrentUser().isOrganizer())
+            throw new UseCaseLogicException("Only organizer can add emoloyee to team");
+        if (team == null)
+            throw new UseCaseLogicException("Team for this service should exists.");
+        for(String role : roles){
+            TeamMember t = new TeamMember(id, role);
+            t.insert();
+            team.add(t);
+        }
+    }
+
+
     public boolean addEmployeeToTeam(Employee employee, String role) throws UseCaseLogicException {
         if(!UserManager.getInstance().getCurrentUser().isOrganizer())
             throw new UseCaseLogicException("Only organizer can add emoloyee to team");
