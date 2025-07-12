@@ -84,8 +84,8 @@ throw UseCaseLogicException</panel_attributes>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>605</x>
-      <y>0</y>
+      <x>319</x>
+      <y>11</y>
       <w>374</w>
       <h>44</h>
     </coordinates>
