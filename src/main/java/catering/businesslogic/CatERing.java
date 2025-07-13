@@ -65,6 +65,8 @@ public class CatERing {
         System.out.println("- Event Manager: " + (app.getEventManager() != null ? "OK" : "NOT AVAILABLE"));
         System.out.println("- Kitchen Task Manager: " + (app.getKitchenTaskManager() != null ? "OK" : "NOT AVAILABLE"));
         System.out.println("- Shift Manager: " + (app.getShiftManager() != null ? "OK" : "NOT AVAILABLE"));
+        System.out.println("- Holidays Manager: " + (app.getHolidaysManager() != null ? "OK" : "NOT AVAILABLE"));
+        System.out.println("- Employee Manager: " + (app.getEmployeeManager() != null ? "OK" : "NOT AVAILABLE"));
     }
 
     public KitchenTaskManager getKitchenTaskManager() {
